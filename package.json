@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@liff/get-profile": "^2.23.2",
     "@line/liff": "^2.23.2",
     "next": "14.2.2",
     "react": "^18",
