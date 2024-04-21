@@ -39,7 +39,7 @@ const formSchema = z.object({
     }),
 });
 
-export function Page() {
+const Page = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const today = moment().format("YYYY年 MM月 DD日");
   const form = useForm<z.infer<typeof formSchema>>({
@@ -128,6 +128,6 @@ export function Page() {
       </AlertDialog>
     </>
   );
-}
+};
 
 export default Page;
