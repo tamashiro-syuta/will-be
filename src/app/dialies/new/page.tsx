@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { showSuccess } from "@/lib/toast-actions";
 import { createRenewalDiary } from "@/app/actions";
+import { useLiff } from "@/components/custom/provider/LiffProvider";
 
 const formSchema = z.object({
   text: z
@@ -40,6 +41,7 @@ const formSchema = z.object({
 });
 
 const Page = () => {
+  const { liff } = useLiff();
   const [dialogOpen, setDialogOpen] = useState(false);
   const today = moment().format("YYYY年 MM月 DD日");
   const form = useForm<z.infer<typeof formSchema>>({
@@ -49,11 +51,22 @@ const Page = () => {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
     console.log(values);
 
     setDialogOpen(true);
-  }
+  };
+
+  const dialogAction = async () => {
+    try {
+      const renewalDiary = await createRenewalDiary(form.getValues().text);
+
+      console.log(renewalDiary);
+      showSuccess({ message: "成功！！！" });
+    } catch (error) {}
+
+    setDialogOpen(false);
+  };
 
   return (
     <>
@@ -106,21 +119,7 @@ const Page = () => {
             >
               戻る
             </AlertDialogAction>
-            <AlertDialogAction
-              onClick={async () => {
-                try {
-                  const renewalDiary = await createRenewalDiary(
-                    form.getValues().text
-                  );
-
-                  console.log(renewalDiary);
-                  showSuccess({ message: "成功！！！" });
-                } catch (error) {}
-
-                setDialogOpen(false);
-              }}
-              className="basis-1/2"
-            >
+            <AlertDialogAction onClick={dialogAction} className="basis-1/2">
               記録
             </AlertDialogAction>
           </AlertDialogFooter>
