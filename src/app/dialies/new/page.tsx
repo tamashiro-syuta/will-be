@@ -26,6 +26,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { showSuccess } from "@/lib/toast-actions";
+import { createRenewalDiary } from "@/app/actions";
 
 const formSchema = z.object({
   text: z
@@ -88,7 +89,6 @@ export function Page() {
         </form>
       </Form>
       <AlertDialog open={dialogOpen}>
-        {/* <AlertDialogTrigger>Open</AlertDialogTrigger> */}
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
@@ -107,10 +107,16 @@ export function Page() {
               戻る
             </AlertDialogAction>
             <AlertDialogAction
-              onClick={() => {
-                // TODO: ChatGPTにリクエスト
+              onClick={async () => {
+                try {
+                  const renewalDiary = await createRenewalDiary(
+                    form.getValues().text
+                  );
 
-                showSuccess({ message: "成功！！！" });
+                  console.log(renewalDiary);
+                  showSuccess({ message: "成功！！！" });
+                } catch (error) {}
+
                 setDialogOpen(false);
               }}
               className="basis-1/2"
